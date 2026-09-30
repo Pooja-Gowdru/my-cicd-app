@@ -23,10 +23,11 @@ pipeline {
 
                         ssh -o StrictHostKeyChecking=no azureuser@20.114.40.192 '
                             cd ~/my-cicd-app &&
+                            rm -rf venv &&
                             python3 -m venv venv &&
-                            ./venv/bin/pip install -r requirements.txt &&
-                            pkill -f "my-cicd-app/venv/bin/python app.py" || true &&
-                            nohup ./venv/bin/python app.py > app.log 2>&1 &
+                            ./venv/bin/python -m pip install -r requirements.txt &&
+                            pkill -f "venv/bin/python app.py" || true &&
+                            nohup ./venv/bin/python app.py > app.log 2>&1 </dev/null &
                         '
                     '''
                 }
