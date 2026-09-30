@@ -18,13 +18,14 @@ pipeline {
                         '
 
                         scp -o StrictHostKeyChecking=no app.py \
-                            azureuser@20.114.40.192:~/my-cicd-app/app.py
+                            requirements.txt \
+                            azureuser@20.114.40.192:~/my-cicd-app/
 
                         ssh -o StrictHostKeyChecking=no azureuser@20.114.40.192 '
                             cd ~/my-cicd-app &&
                             python3 -m venv venv &&
-                            ./venv/bin/pip install flask &&
-                            pkill -f "python.*app.py" || true &&
+                            ./venv/bin/pip install -r requirements.txt &&
+                            pkill -f "my-cicd-app/venv/bin/python app.py" || true &&
                             nohup ./venv/bin/python app.py > app.log 2>&1 &
                         '
                     '''
